@@ -15,3 +15,7 @@ deactivate
 pip freeze > requirements.txt
 
 pip install -r requirements.txt
+
+# Credits
+
+Credits to [crazycodersonline](https://github.com/crazycodersonline) for [rolling dice animation](https://github.com/crazycodersonline/Dice-Roll-With-Pygame)
