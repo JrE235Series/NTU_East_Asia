@@ -40,25 +40,46 @@ def main():
     tile_size = settings.block_size  # 每格大小
     board_positions = []
 
-    # 上邊 10 格 (0到9)
-    for i in range(settings.row_count):
-        board_positions.append((i * tile_size, 0))
-
-    # 右邊 6 - 2格 (1到4)
-    for i in range(1, (settings.column_count - 1)):
-        board_positions.append(((settings.row_count - 1) * tile_size, i * tile_size))
-
-    # 下邊 10格 (9到0)
-    for i in range((settings.row_count - 1), -1, -1):
+    # 右邊 6 格 (0到6)
+    for i in range(settings.column_count):
+        board_positions.append(((settings.row_count - 1) * tile_size, (settings.column_count - i) * tile_size))
+    # 上邊 8 - 2 格 (7到12)
+    for i in range(1, (settings.row_count)):
+        board_positions.append(((settings.row_count - i) * tile_size, 0))
+    # 左邊 6 格 (13到18)
+    for i in range((settings.column_count), 0, -1):
+        board_positions.append((0, (settings.column_count - i) * tile_size))
+        # 下邊 8 - 2格 (19到23)
+    for i in range(1, (settings.row_count - 1)):
         board_positions.append((i * tile_size, (settings.column_count - 1) * tile_size))
-
-    # 左邊 6 - 2 格 (4到1)
-    for i in range((settings.column_count - 2), 0, -1):
-        board_positions.append((0, i * tile_size))
 
     # 設定格子資料
     tile_data = {
-        5: {"image": "./img/chopper.png", "link": "https://www.youtube.com/watch?v=dQw4w9WgXcQ"}
+        1: {"image": "./img/1.png"},
+        2: {"image": "./img/2.png"},
+        3: {"image": "./img/3.png"},
+        4: {"image": "./img/4.png"},
+        5: {"image": "./img/5.png"},
+        6: {"image": "./img/6.png"},
+        7: {"image": "./img/7.png"},
+        8: {"image": "./img/8.png"},
+        9: {"image": "./img/9.png"},
+        10: {"image": "./img/10.png"},
+        11: {"image": "./img/11.png"},
+        12: {"image": "./img/12.png"},
+        13: {"image": "./img/13.png"},
+        14: {"image": "./img/14.png"},
+        15: {"image": "./img/15.png"},
+        16: {"image": "./img/16.png"},
+        17: {"image": "./img/17.png"},
+        18: {"image": "./img/18.png"},
+        19: {"image": "./img/19.png"},
+        20: {"image": "./img/20.png"},
+        21: {"image": "./img/21.png"},
+        22: {"image": "./img/22.png"},
+        23: {"image": "./img/23.png"},
+        24: {"image": "./img/24.png"},
+
     }
 
     # 初始化骰子畫面
