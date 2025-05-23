@@ -1,15 +1,23 @@
 import pygame
-import settings
+from settings import *
 import random
+import button_tr
 
-class Dice_Panel:
-    def __init__(self, size=(settings.dice_panel_width, settings.dice_panel_height), 
-                 position=(settings.dice_panel_positon[0], settings.dice_panel_positon[1])):
+class Central_Panel:
+    def __init__(self, size=(central_panel_width, central_panel_height), 
+                 position=(central_panel_position[0], central_panel_position[1])):
 
         self.surface = pygame.Surface(size,pygame.SRCALPHA)
         self.rect = self.surface.get_rect(topleft=position)
         #self.surface.fill((255, 255, 255, 128))
-        #self.background_image = pygame.image.load('graphics/background2.png')
+        self.background_image = pygame.image.load('./img/main_bg.png')
+        self.dice_overlay = pygame.Surface((200, 200), pygame.SRCALPHA)
+        pygame.draw.rect(
+            self.dice_overlay,
+            (255, 255, 255, 63),  # RGBA: white, 25% transparent
+            self.dice_overlay.get_rect(),
+            border_radius=10      # Rounded corners radius
+        )
         self.font = pygame.font.Font('font/SunnyspellsRegular.otf', 50)
         self.roll_message_rolling = self.font.render("Dice Rolling...", True, (255, 235, 193))
         self.roll_message_val = self.font.render("", True, (255, 235, 193))
@@ -37,13 +45,28 @@ class Dice_Panel:
         self.first = True
         self.rand_num = 0
 
-    def frame_update(self , screen):
-        #self.surface.blit(self.background_image, (0, 0))
-        #self.surface.fill((255, 255, 255, 128))
-        self.surface.blit(self.dice_images[self.rand_num], (250, 150))
+        self.button = button_tr.AnimatedButton(
+            rect=(central_panel_width-300, 0, 300, 100),
+            text="Click Me",
+            font=pygame.font.SysFont(None, 36),
+            color_idle=(0, 0, 0),  # unused, but required
+            color_hover=(255, 255, 255),  # shown as semi-transparent white
+            color_click=(200, 200, 200)   # solid light gray on click
+        )
+
+
+    def frame_update(self , screen, mouse_pos, mouse_pressed ,text):
+        self.button.set_text(text)
+        self.button.update(mouse_pos, mouse_pressed)
+        self.surface.blit(self.background_image, (0, 0))
+        #self.surface.fill((255, 255, 255, 128),rect=pygame.Rect(0, 0, 200, 200))
+        self.surface.blit(self.dice_overlay,(0,0))
+        self.surface.blit(self.dice_images[self.rand_num], (50, 50))
         self.roll_message_val = self.font.render(str(self.rand_num + 1), True, (255, 235, 193))
-        self.surface.blit(self.roll_message_val, (50, 300))
+        self.surface.blit(self.roll_message_val, (50, 530))
+        self.button.draw(self.surface)
         screen.blit(self.surface, self.rect.topleft)
+        
 
 
     def roll_dice(self , screen):
@@ -54,7 +77,7 @@ class Dice_Panel:
             #self.rand_num = random.randint(0, 5)
             self.rand_num = random.randint(0, random.randint(0,5))
             dice_num_image = self.dice_images[self.rand_num]
-            self.surface.blit(self.dice_rolling_images[self.rolling_images_counter], (250, 150))
+            self.surface.blit(self.dice_rolling_images[self.rolling_images_counter], (50, 50))
             self.rolling_images_counter += 1
             self.first = True
         while True:
@@ -62,9 +85,11 @@ class Dice_Panel:
                 if event.type == pygame.QUIT:
                     pygame.quit()
                     exit()
-            #self.surface.blit(self.background_image, (0, 0))
-            #self.surface.fill((255, 255, 255, 128))
-            self.surface.blit(self.roll_message_rolling, (50, 300))
+            self.surface.blit(self.background_image, (0, 0))
+            self.surface.blit(self.dice_overlay,(0,0))
+            self.button.draw(self.surface)
+            #self.surface.fill((255, 255, 255, 128),rect=pygame.Rect(0, 0, 200, 200))
+            self.surface.blit(self.roll_message_rolling, (50, 530))
 
             
             
@@ -73,14 +98,16 @@ class Dice_Panel:
             
             if self.is_rolling:
                 # showing rolling animation images
-                self.surface.blit(self.dice_rolling_images[self.rolling_images_counter], (250, 150))
+                
+                self.surface.blit(self.dice_rolling_images[self.rolling_images_counter], (50, 50))
                 self.rolling_images_counter += 1
                 if self.rolling_images_counter >= 8:
                     self.is_rolling = False
                     self.rolling_images_counter = 0
 
             else:
-                self.surface.blit(dice_num_image, (250, 150))
+                
+                self.surface.blit(dice_num_image, (50, 50))
                 if self.first:
                     self.rolling_stop_aud.play()
                     self.first = False
