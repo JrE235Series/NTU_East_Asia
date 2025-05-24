@@ -5,6 +5,7 @@ class AnimatedButton:
         self.rect = pygame.Rect(rect)
         self.text = text
         self.font = font
+        self.font.set_bold(True)
         self.color_idle = color_idle
         self.color_hover = color_hover
         self.color_click = color_click

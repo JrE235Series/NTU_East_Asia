@@ -7,14 +7,16 @@ import roll_dice
 from button import *
 import central_panel
 import tile_panel
+from event import *
 
-status_list = {"Wait For Dice Roll":1, "Dice Rolling":2 , "Event Wait Trigger":3 , "Event Trigger":4}
+status_list = {"Wait For Dice Roll":1, "Dice Rolling":2 , "Event Wait Trigger":3 , "Event Trigger":4 , "Sudo":99}
 
 
 def main():
     pygame.init()
     
     global_status = "Wait For Dice Roll"
+    screen_status = 100
     # 畫面設定
     screen = pygame.display.set_mode((window_width, window_height))
     pygame.display.set_caption("大富翁電子版")
@@ -32,10 +34,12 @@ def main():
             self.name = name
             self.color = color
             self.money = 1500
-            self.position = 0
+            self.position = 1
             self.properties = []
             self.path = []
             self.has_treasure = False
+            self.triggered = False
+            self.lock = False
     '''
     def roll_dice():
         return random.randint(1, 6)
@@ -43,8 +47,13 @@ def main():
     
 
     # 創建玩家
-    player1 = Player("小明", (255, 0, 0))  # 紅色
-
+    player_list = []
+    player_list.append(None)
+    player_count = 1
+    #player1 = Player("P1", (255, 0, 0))  # 紅色
+    for i in range(1,player_count+1):
+        name = "P" + str(i)
+        player_list.append(Player(name, (255, 0, 0))) 
     # 設定棋盤
     tile_size = block_size  # 每格大小
     board_positions = []
@@ -95,13 +104,10 @@ def main():
     # 初始化中央畫面
     g_central_panel = central_panel.Central_Panel()
     g_tile_panel = tile_panel.Tile_Panel(board_positions,tile_data)
-
+    current_event_panel = None
+    current_player = 1
     screen.fill((255, 255, 255))
-
     
-   
-    
-
     running = True
 
     while running:
@@ -110,37 +116,67 @@ def main():
         mouse_pressed = pygame.mouse.get_pressed()
         event_list = pygame.event.get()
 
-        for event in event_list:
-            if event.type == pygame.QUIT:
-                running = False
-            elif event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_SPACE and global_status == "Wait For Dice Roll":
-                    global_status = "Dice Rolling"
-                    steps = g_central_panel.roll_dice(screen)
-                    
-                    player1.position = (player1.position + steps) % len(board_positions)
-                    global_status = "Event Wait Trigger"
-                    
-                if event.key == pygame.K_RETURN:
-                    # 按下 Enter 鍵，檢查玩家目前站的格子有沒有連結
-                    current_idx = player1.position
-                    if current_idx in tile_data and "link" in tile_data[current_idx]:
-                        webbrowser.open(tile_data[current_idx]["link"])
-            elif g_central_panel.button.is_clicked(mouse_pos_central, event_list) and global_status == "Event Wait Trigger":
-                global_status = "Wait For Dice Roll"
-                print("Button was clicked! Trigger Event")
-                
-        
-        g_tile_panel.frame_update(screen)
-        # 中央畫面更新
-        g_central_panel.frame_update(screen,mouse_pos_central, mouse_pressed,global_status)
-        
-        
-         # 畫玩家
-        player_pos = board_positions[player1.position]
-        pygame.draw.circle(screen, player1.color, (player_pos[0] + tile_size // 2, player_pos[1] + tile_size // 2), 20)
+        if (screen_status == 100):
 
-        
+            for event in event_list:
+                if event.type == pygame.QUIT:
+                    running = False
+                elif event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_SPACE and global_status == "Wait For Dice Roll":
+                        global_status = "Dice Rolling"
+                        steps = g_central_panel.roll_dice(screen)
+                        
+                        player_list[current_player].position = (player_list[current_player].position + steps) % len(board_positions)
+                        player_list[current_player].triggered = False
+                        global_status = "Event Wait Trigger"
+
+                    if event.key == pygame.K_UP:
+                        player_list[current_player].position = (player_list[current_player].position + 1) % len(board_positions)
+                        player_list[current_player].triggered = False
+                        global_status = "Event Wait Trigger"
+                    if event.key == pygame.K_DOWN:
+                        player_list[current_player].position = (player_list[current_player].position - 1) % len(board_positions)
+                        player_list[current_player].triggered = False
+                        global_status = "Event Wait Trigger"    
+                    if event.key == pygame.K_RETURN:
+                        # 按下 Enter 鍵，檢查玩家目前站的格子有沒有連結
+                        current_idx = player_list[current_player].position
+                        if current_idx in tile_data and "link" in tile_data[current_idx]:
+                            webbrowser.open(tile_data[current_idx]["link"])
+                elif g_central_panel.button.is_clicked(mouse_pos_central, event_list) and (global_status == "Event Wait Trigger" or global_status == "Wait For Dice Roll"):
+                    global_status = "Wait For Dice Roll"
+                    
+                    screen_status = player_list[current_player].position
+                    print("Trigger Event",screen_status)
+                    current_event_panel , screen_status = event_init(screen_status)
+
+                    
+            # 格子畫面更新
+            g_tile_panel.frame_update(screen)
+            
+            # 中央畫面更新
+            g_central_panel.frame_update(screen,mouse_pos_central, mouse_pressed,global_status)
+            
+            # （畫）玩家位置更新
+            player_pos = board_positions[player_list[current_player].position]
+            pygame.draw.circle(screen, player_list[current_player].color, (player_pos[0] + tile_size // 2, player_pos[1] + tile_size // 2), 20)
+
+        else:
+            for event in event_list:
+                if event.type == pygame.QUIT:
+                    running = False
+            event_run(screen_status,current_event_panel,screen,mouse_pos, mouse_pressed,event_list)
+            if event_button_close(screen_status,current_event_panel,mouse_pos, event_list):
+                r_val = event_end(screen_status,player_list[current_player],current_event_panel)
+                current_event_panel = None
+                screen_status = 100
+                if (r_val["TYPE"] == "Quiz" and not r_val["ANS"]):
+                    global_status = "Event Wait Trigger"
+
+                if (r_val["NPOS"] != player_list[current_player].position):
+                    print(player_list[current_player].name,"Change Position to",r_val["NPOS"])
+                player_list[current_player].position = r_val["NPOS"]
+
         pygame.display.flip()
 
 
