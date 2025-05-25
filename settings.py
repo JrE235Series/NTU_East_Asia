@@ -21,3 +21,13 @@ score_panel_position = [window_width - block_size - score_panel_width, block_siz
 central_panel_width = 900
 central_panel_height = 600
 central_panel_position = [block_size, block_size]
+
+mode = -1
+
+demo_dice_val = [3,2,4,3,3,2,2,3,2]  #last 2 is to get back to block 1
+demo_dice_count = len(demo_dice_val)
+
+player_size_4 = (77,77)
+player_size_1 = (140,140)
+player_space_x = 75
+player_space_y = 75

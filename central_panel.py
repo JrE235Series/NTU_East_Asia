@@ -2,6 +2,7 @@ import pygame
 from settings import *
 import random
 import button_tr
+import settings
 
 class Central_Panel:
     def __init__(self, size=(central_panel_width, central_panel_height), 
@@ -22,7 +23,7 @@ class Central_Panel:
         self.roll_message_rolling = self.font.render("Dice Rolling...", True, (255, 235, 193))
         self.roll_message_val = self.font.render("", True, (255, 235, 193))
         self.clock = pygame.time.Clock()
-
+        self.demo_dice_index = 0
         self.dice_images = []
         self.dice_rolling_images = []
 
@@ -75,7 +76,12 @@ class Central_Panel:
             self.is_rolling = True
             self.rolling_aud.play()
             #self.rand_num = random.randint(0, 5)
-            self.rand_num = random.randint(0, random.randint(0,5))
+            if (settings.mode == 27):
+                self.rand_num = settings.demo_dice_val[(self.demo_dice_index%settings.demo_dice_count)]
+                self.rand_num -= 1
+                self.demo_dice_index += 1
+            else:
+                self.rand_num = random.randint(0, random.randint(0,5))
             dice_num_image = self.dice_images[self.rand_num]
             self.surface.blit(self.dice_rolling_images[self.rolling_images_counter], (50, 50))
             self.rolling_images_counter += 1

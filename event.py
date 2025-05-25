@@ -270,9 +270,14 @@ def event_end(tile_num,player,panel):
         else:
             r_val["NPOS"] = 16
     if (tile_num == 9):
-        r_val["NPOS"] = 16% settings.tile_count
-        print(player.name,"is locked at 16")
-        r_val["LOCK"] = True
+        if (settings.mode == 27):
+            r_val["NPOS"] = player.position
+            print("Demo mode no move")
+        else:
+            r_val["NPOS"] = 16% settings.tile_count
+            player.lock = True
+            print(player.name,"is locked at 16")
+            r_val["LOCK"] = True
     if (tile_num == 10):
         if (1 <= panel.final_num <= 3):
             r_val["NPOS"] = (player.position - 1) % settings.tile_count
@@ -289,7 +294,11 @@ def event_end(tile_num,player,panel):
                 r_val["NPOS"] = (player.position + 2)% settings.tile_count
         print("Quiz",tile_num,panel.status)
     if (tile_num == 12):
-        r_val["NPOS"] = (player.position - 1)% settings.tile_count
+        if (settings.mode == 27):
+            r_val["NPOS"] = player.position
+            print("Demo mode no move")
+        else:
+            r_val["NPOS"] = (player.position - 1)% settings.tile_count
     if (tile_num == 13):
         if not player.triggered:
             print(player.name,"First Triggered Event Add Treasure",tile_num)
@@ -300,6 +309,7 @@ def event_end(tile_num,player,panel):
         print("Event End",tile_num)
     if (tile_num == 14):
         r_val["NPOS"] = 16% settings.tile_count
+        player.lock = True
         print(player.name,"is locked at 16")
         r_val["LOCK"] = True
     if (tile_num == 15):
@@ -332,7 +342,11 @@ def event_end(tile_num,player,panel):
                 r_val["NPOS"] = (player.position + 2)% settings.tile_count
         print("Quiz",tile_num,panel.status)
     if (tile_num == 21):
-        r_val["NPOS"] = (player.position - 2)% settings.tile_count
+        if (settings.mode == 27):
+            r_val["NPOS"] = player.position
+            print("Demo mode no move")
+        else:
+            r_val["NPOS"] = (player.position - 2)% settings.tile_count
     if (tile_num == 22):
         pass
     if (tile_num == 23):
