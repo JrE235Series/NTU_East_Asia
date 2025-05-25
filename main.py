@@ -283,6 +283,7 @@ def main():
 
                 if (r_val["NPOS"] != player_list[current_player].position):
                     print(player_list[current_player].name,"Change Position to",r_val["NPOS"])
+                    global_status = "Event Wait Trigger"
                 player_list[current_player].position = r_val["NPOS"]
                 next_player = choose_next_player(current_player,player_count,player_list)
         pygame.display.flip()
