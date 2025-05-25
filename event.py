@@ -87,7 +87,7 @@ def event_init(tile_num):
         return info_panel,tile_num
     else :return None,100
 
-def event_run(tile_num,panel,screen,mouse_pos, mouse_pressed,event_list):
+async def event_run(tile_num,panel,screen,mouse_pos, mouse_pressed,event_list):
 
     if (tile_num == 1):
         panel.frame_update(screen,mouse_pos, mouse_pressed)
@@ -128,14 +128,18 @@ def event_run(tile_num,panel,screen,mouse_pos, mouse_pressed,event_list):
         panel.frame_update(screen,mouse_pos, mouse_pressed)
         for event in event_list:
             if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
-                panel.roll_dice(screen)
+                await panel.roll_dice(screen)
+            elif panel.dice_button.is_clicked(mouse_pos, event_list):
+                await panel.roll_dice(screen)
     if (tile_num == 9):
         panel.frame_update(screen,mouse_pos, mouse_pressed)
     if (tile_num == 10):
         panel.frame_update(screen,mouse_pos, mouse_pressed)
         for event in event_list:
             if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
-                panel.roll_dice(screen)
+                await panel.roll_dice(screen)
+            elif panel.dice_button.is_clicked(mouse_pos, event_list):
+                await panel.roll_dice(screen)
     if (tile_num == 11):
         panel.frame_update(screen,mouse_pos, mouse_pressed)
         #quiz

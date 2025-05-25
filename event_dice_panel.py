@@ -3,6 +3,7 @@ from settings import *
 import random
 import button_tr
 import button
+import asyncio
 
 pos_dice = (550,720)
 pos_message = (50,800)
@@ -39,8 +40,8 @@ class Dice_Panel:
             dice_rolling_image = pygame.image.load('graphics/animation/roll' + str(num) + '.png')
             self.dice_rolling_images.append(dice_rolling_image)
         
-        self.rolling_aud = pygame.mixer.Sound('audio/roll_aud.mp3')
-        self.rolling_stop_aud = pygame.mixer.Sound('audio/roll_stop_aud.mp3')
+        self.rolling_aud = pygame.mixer.Sound('audio/roll_aud.ogg')
+        self.rolling_stop_aud = pygame.mixer.Sound('audio/roll_stop_aud.ogg')
 
         self.is_rolling = False
         self.rolling_images_counter = 0
@@ -57,6 +58,14 @@ class Dice_Panel:
             color_hover = (230, 220, 200),  # lighter beige
             color_click = (180, 170, 150) 
         )
+        self.dice_button = button.AnimatedButton(
+            rect=(500, 680, 200, 200),
+            text="",
+            font=pygame.font.Font("./font/NotoSansJP_VariableFont_wght.ttf", 30),
+            color_idle  = (230, 220, 200),
+            color_hover = (206, 196, 174),  # lighter beige
+            color_click = (180, 170, 150) 
+        )
 
 
     
@@ -64,19 +73,20 @@ class Dice_Panel:
     def frame_update(self , screen, mouse_pos, mouse_pressed):
         
         self.button.update(mouse_pos, mouse_pressed,self.button.text)
+        self.dice_button.update(mouse_pos, mouse_pressed,self.button.text)
         self.surface.blit(self.background_image, (0, 0))
-        
+        self.dice_button.draw(self.surface)
         self.surface.blit(self.dice_images[self.rand_num], pos_dice)
         if (self.diced):
             self.roll_message_val = self.font.render(str(self.rand_num + 1), True, (206, 196, 174))
             self.surface.blit(self.roll_message_val, (150,800))
         else:
-            self.roll_message_val = self.font.render("Press Space to Roll", True, (206, 196, 174))
+            self.roll_message_val = self.font.render("Click Dice to Roll", True, (206, 196, 174))
             self.surface.blit(self.roll_message_val, pos_message)
         self.button.draw(self.surface)
         screen.blit(self.surface, self.rect.topleft)
     
-    def roll_dice(self , screen):
+    async def roll_dice(self , screen):
         if self.diced : return
         self.diced = True
         if  self.is_rolling is False:
@@ -94,6 +104,7 @@ class Dice_Panel:
             self.surface.blit(self.background_image, (0, 0))
             
             self.button.draw(self.surface)
+            self.dice_button.draw(self.surface)
             #self.surface.fill((255, 255, 255, 128),rect=pygame.Rect(0, 0, 200, 200))
             self.surface.blit(self.roll_message_rolling, pos_message)
 
@@ -120,7 +131,8 @@ class Dice_Panel:
                 # show the dice which contains a number
             screen.blit(self.surface, self.rect.topleft)
             pygame.display.update()
-            self.clock.tick(13)
+            #self.clock.tick(13)
             if (not self.first):
                 break
+            await asyncio.sleep(1/16)
         return self.rand_num+1

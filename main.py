@@ -1,14 +1,15 @@
 import pygame
 import random
 import webbrowser
+import argparse
+import asyncio
 
 from settings import *
-import roll_dice
 from button import *
+from event import *
+import roll_dice
 import central_panel
 import tile_panel
-from event import *
-import argparse
 
 status_list = {"Wait For Dice Roll":1, "Dice Rolling":2 , "Event Wait Trigger":3 , "Event Trigger":4 , "Sudo":99}
 
@@ -44,7 +45,7 @@ def choose_next_player(cur , count , player_list):
     print("Final next is",next)
     return next
 
-def main():
+async def main():
 
     parser = argparse.ArgumentParser()
 
@@ -52,7 +53,7 @@ def main():
     parser.add_argument("mode", nargs="?", default="normal", help="Run mode: 'demo' or 'normal'")
 
     args = parser.parse_args()
-
+    #args.mode = "demo"
     if args.mode == "demo":
         print("Running in DEMO mode")
         # your demo behavior here
@@ -61,6 +62,9 @@ def main():
         print("Running in NORMAL mode")
         # your normal behavior here
         settings.mode = 1
+
+    
+
     pygame.init()
     
     
@@ -210,7 +214,7 @@ def main():
                     if event.key == pygame.K_SPACE and global_status == "Wait For Dice Roll":
                         current_player = next_player
                         global_status = "Dice Rolling"
-                        steps = g_central_panel.roll_dice(screen)
+                        steps = await g_central_panel.roll_dice(screen)
                         
                         player_list[current_player].position = (player_list[current_player].position + steps) % len(board_positions) 
                         player_list[current_player].triggered = False
@@ -252,6 +256,15 @@ def main():
                     screen_status = player_list[current_player].position
                     print("Trigger Event",screen_status)
                     current_event_panel , screen_status = event_init(screen_status)
+                elif g_central_panel.dice_button.is_clicked(mouse_pos_central, event_list) and global_status == "Wait For Dice Roll":
+                    current_player = next_player
+                    global_status = "Dice Rolling"
+                    steps = await g_central_panel.roll_dice(screen)
+                    
+                    player_list[current_player].position = (player_list[current_player].position + steps) % len(board_positions) 
+                    player_list[current_player].triggered = False
+                    global_status = "Event Wait Trigger"
+                    next_player = choose_next_player(current_player,player_count,player_list)
 
                     
             # 格子畫面更新
@@ -273,7 +286,7 @@ def main():
             for event in event_list:
                 if event.type == pygame.QUIT:
                     running = False
-            event_run(screen_status,current_event_panel,screen,mouse_pos, mouse_pressed,event_list)
+            await event_run(screen_status,current_event_panel,screen,mouse_pos, mouse_pressed,event_list)
             if event_button_close(screen_status,current_event_panel,mouse_pos, event_list):
                 r_val = event_end(screen_status,player_list[current_player],current_event_panel)
                 current_event_panel = None
@@ -287,6 +300,7 @@ def main():
                 player_list[current_player].position = r_val["NPOS"]
                 next_player = choose_next_player(current_player,player_count,player_list)
         pygame.display.flip()
+        await asyncio.sleep(0)
 
 
 
@@ -295,14 +309,4 @@ def main():
 
 if __name__ == "__main__":
     # this block runs only if the script is run directly
-    main()
-
-
-
-'''
-5/20 Notes
-
-報紙找答案
-
-展演一人 實際多人
-'''
+    asyncio.run(main())
