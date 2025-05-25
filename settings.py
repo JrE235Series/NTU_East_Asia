@@ -31,3 +31,12 @@ player_size_4 = (77,77)
 player_size_1 = (140,140)
 player_space_x = 75
 player_space_y = 75
+
+magazine_link = "https://drive.google.com/file/d/12IlPm0GuwmGAPIBkbdrxv_xv2q_jvyy8/preview#page=10"
+magazine_link_m = "https://mozilla.github.io/pdf.js/web/viewer.html?file=https://jre235series.github.io/NTU_East_Asia/%E5%BC%95%E6%8F%9A%E5%91%A8%E5%88%8A.pdf"
+
+magazine_link_m_v1 = "https://mozilla.github.io/pdf.js/web/viewer.html?file=https://jre235series.github.io/NTU_East_Asia/%E5%BC%95%E6%8F%9A%E5%91%A8%E5%88%8A.pdf#page=3"
+
+magazine_link_m_v2 = "https://mozilla.github.io/pdf.js/web/viewer.html?file=https://jre235series.github.io/NTU_East_Asia/%E5%BC%95%E6%8F%9A%E5%91%A8%E5%88%8A.pdf#page=4"
+
+magazine_link_m_p1 = "https://mozilla.github.io/pdf.js/web/viewer.html?file=https://jre235series.github.io/NTU_East_Asia/%E5%BC%95%E6%8F%9A%E5%91%A8%E5%88%8A.pdf#page=6"

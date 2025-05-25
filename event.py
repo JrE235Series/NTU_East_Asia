@@ -5,6 +5,7 @@ import event_quiz_panel
 import event_info_panel
 import event_dice_panel
 import event_pages_panel
+import webbrowser
 def event_init(tile_num):
 
     if tile_num == 1:
@@ -166,6 +167,8 @@ def event_run(tile_num,panel,screen,mouse_pos, mouse_pressed,event_list):
         panel.frame_update(screen,mouse_pos, mouse_pressed)
     if (tile_num == 15):
         panel.frame_update(screen,mouse_pos, mouse_pressed)
+        if (panel.button_link.is_clicked(mouse_pos, event_list)):
+            webbrowser.open(settings.magazine_link_m_p1)
     #16 pass
     if (tile_num == 17):
         panel.frame_update(screen,mouse_pos, mouse_pressed)
@@ -193,6 +196,8 @@ def event_run(tile_num,panel,screen,mouse_pos, mouse_pressed,event_list):
         panel.frame_update(screen,mouse_pos, mouse_pressed)
     if (tile_num == 19):
         panel.frame_update(screen,mouse_pos, mouse_pressed)
+        if (panel.button_link.is_clicked(mouse_pos, event_list)):
+            webbrowser.open(settings.magazine_link_m_v2)
     if (tile_num == 20):
         panel.frame_update(screen,mouse_pos, mouse_pressed)
         #quiz
@@ -219,6 +224,8 @@ def event_run(tile_num,panel,screen,mouse_pos, mouse_pressed,event_list):
         panel.frame_update(screen,mouse_pos, mouse_pressed)
     if (tile_num == 22):
         panel.frame_update(screen,mouse_pos, mouse_pressed)
+        if (panel.button_link.is_clicked(mouse_pos, event_list)):
+            webbrowser.open(settings.magazine_link_m_v1)
     if (tile_num == 23):
         panel.frame_update(screen,mouse_pos, mouse_pressed)
     if (tile_num == 24):
