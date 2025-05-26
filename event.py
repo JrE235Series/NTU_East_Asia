@@ -10,6 +10,7 @@ def event_init(tile_num):
 
     if tile_num == 1:
         print("Video [Link]")
+        webbrowser.open("https://drive.google.com/file/d/1FE-ANme8tCisRsK4FK_mP3BAJPznVkbM/view?usp=drive_link")
         info_panel = event_info_panel.Info_Panel(tile_num)
         return info_panel,tile_num
     if tile_num == 2:
@@ -20,6 +21,7 @@ def event_init(tile_num):
         return quiz_panle,tile_num
     if tile_num == 4:
         print("Video [Link]")
+        webbrowser.open("https://drive.google.com/file/d/1yKGGTZHWZT6KPwUzwAlLKUbNdAp-yfMP/view?usp=drive_link")
         info_panel = event_info_panel.Info_Panel(tile_num)
         return info_panel,tile_num
     if tile_num == 5:
@@ -27,6 +29,7 @@ def event_init(tile_num):
         return info_panel,tile_num
     if tile_num == 6:
         print("Video [Link]")
+        webbrowser.open("https://drive.google.com/file/d/11KUxgQPgjNw0nz_t-Gf9QjGDmPpiiMbS/view?usp=drive_link")
         info_panel = event_info_panel.Info_Panel(tile_num)
         return info_panel,tile_num
     if tile_num == 7:
@@ -46,6 +49,7 @@ def event_init(tile_num):
         return quiz_panle,tile_num
     if tile_num == 12:
         print("Video [Link]")
+        webbrowser.open("https://drive.google.com/file/d/1BFVaO0-xFX9jPlfakrr5Un9ImoFHoNHr/view?usp=drive_link")
         info_panel = event_info_panel.Info_Panel(tile_num)
         return info_panel,tile_num
     if tile_num == 13:
@@ -73,6 +77,7 @@ def event_init(tile_num):
         return quiz_panle,tile_num
     if tile_num == 21:
         print("Video [Link]")
+        webbrowser.open("https://drive.google.com/file/d/19aCwEM8Tv_BCIhFCYphC-VB1fKA7Ou64/view?usp=drive_link")
         info_panel = event_info_panel.Info_Panel(tile_num)
         return info_panel,tile_num
     if tile_num == 22:
@@ -83,6 +88,7 @@ def event_init(tile_num):
         return pages_panel,tile_num
     if tile_num == 24:
         print("Video [Link]")
+        webbrowser.open("https://drive.google.com/file/d/1-0bIvuCUyUIBxQ-KscXBQOAa4XMjJpsx/view?usp=drive_link")
         info_panel = event_info_panel.Info_Panel(tile_num)
         return info_panel,tile_num
     else :return None,100
