@@ -4,6 +4,7 @@ import random
 import button_tr
 import button
 import asyncio
+import button_tr_p
 
 pos_dice = (550,720)
 pos_message = (50,800)
@@ -14,13 +15,21 @@ class Dice_Panel:
         self.surface = pygame.Surface(size,pygame.SRCALPHA)
         self.rect = self.surface.get_rect(topleft=position)
         self.surface.fill((255, 255, 255))
+        self.mag_button_l = None
         if (tile_num == 8):
             self.background_image = pygame.image.load('./event_img/8.png')
             self.background_image = pygame.transform.smoothscale(self.background_image, (window_width, window_height))
         if (tile_num == 10):
             self.background_image = pygame.image.load('./event_img/10.png')
             self.background_image = pygame.transform.smoothscale(self.background_image, (window_width, window_height))
-        
+            self.mag_button_l = button_tr_p.AnimatedButton(
+                rect=(750, 715, 410, 35),
+                text="",
+                font=pygame.font.SysFont(None, 36),
+                color_idle=(0, 0, 0),  # unused, but required
+                color_hover=(200, 200, 200),  # shown as semi-transparent white
+                color_click=(150, 150, 150)
+            )
         
         self.font = pygame.font.Font('font/SunnyspellsRegular.otf', 50)
         self.roll_message_rolling = self.font.render("Dice Rolling...", True, (206, 196, 174))
@@ -83,6 +92,9 @@ class Dice_Panel:
         else:
             self.roll_message_val = self.font.render("Click Dice to Roll", True, (206, 196, 174))
             self.surface.blit(self.roll_message_val, pos_message)
+        if (self.mag_button_l is not None):
+            self.mag_button_l.update(mouse_pos, mouse_pressed)
+            self.mag_button_l.draw(self.surface)
         self.button.draw(self.surface)
         screen.blit(self.surface, self.rect.topleft)
     

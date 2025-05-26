@@ -40,3 +40,18 @@ magazine_link_m_v1 = "https://mozilla.github.io/pdf.js/web/viewer.html?file=http
 magazine_link_m_v2 = "https://mozilla.github.io/pdf.js/web/viewer.html?file=https://jre235series.github.io/NTU_East_Asia/%E5%BC%95%E6%8F%9A%E5%91%A8%E5%88%8A.pdf#page=4"
 
 magazine_link_m_p1 = "https://mozilla.github.io/pdf.js/web/viewer.html?file=https://jre235series.github.io/NTU_East_Asia/%E5%BC%95%E6%8F%9A%E5%91%A8%E5%88%8A.pdf#page=6"
+
+magazine_link_5 = magazine_link_m + "#page=11"
+magazine_link_6 = magazine_link_m + "#page=13"
+magazine_link_7 = magazine_link_m + "#page=11"
+magazine_link_10 = magazine_link_m + "#page=13"
+magazine_link_12 = magazine_link_m + "#page=12"
+magazine_link_21_1 = magazine_link_m + "#page=10"
+magazine_link_21_2 = magazine_link_m + "#page=8"
+
+video_link_1 = "https://drive.google.com/file/d/1FE-ANme8tCisRsK4FK_mP3BAJPznVkbM/view?usp=drive_link"
+video_link_4 = "https://drive.google.com/file/d/1yKGGTZHWZT6KPwUzwAlLKUbNdAp-yfMP/view?usp=drive_link"
+video_link_6 = "https://drive.google.com/file/d/11KUxgQPgjNw0nz_t-Gf9QjGDmPpiiMbS/view?usp=drive_link"
+video_link_12 = "https://drive.google.com/file/d/1BFVaO0-xFX9jPlfakrr5Un9ImoFHoNHr/view?usp=drive_link"
+video_link_21 = "https://drive.google.com/file/d/19aCwEM8Tv_BCIhFCYphC-VB1fKA7Ou64/view?usp=drive_link"
+video_link_24 = "https://drive.google.com/file/d/1-0bIvuCUyUIBxQ-KscXBQOAa4XMjJpsx/view?usp=drive_link"
